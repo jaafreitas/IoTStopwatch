@@ -85,7 +85,8 @@ time_t getNTPTime() {
 
 String getISOTime() {
   static char isoTime[20];
-  sprintf(isoTime, "%04d-%02d-%02dT%02d:%02d:%02d", year(), month(), day(), hour(), minute(), second());
+  time_t t = now();
+  sprintf(isoTime, "%04d-%02d-%02dT%02d:%02d:%02d", year(t), month(t), day(t), hour(t), minute(t), second(t));
   return String(isoTime);
 }
 

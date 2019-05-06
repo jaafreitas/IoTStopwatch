@@ -18,7 +18,8 @@ bool buttonState[TOTAL_STOPWATCHES];
 
 String currentCSVFile() {
   static char path[14];
-  sprintf(path, "/%04d%02d%02d.csv", year(), month(), day());
+  time_t t = now();
+  sprintf(path, "/%04d%02d%02d.csv", year(t), month(t), day(t));
   return String(path);
 }
 
@@ -66,7 +67,7 @@ void checkStopwatch(uint8_t idx) {
         // Stopwatch finished.
         if (!stopwatchTriggered[idx]) {
           unsigned long stopwatch = millis() - timeStopwatchStarted[idx];
-          debugMsg("stopwatch ID %s / time %d (ms)\n", buttonID[idx].c_str(), stopwatch);
+          debugMsg("stopwatch ID %s / time %lu (ms)\n", buttonID[idx].c_str(), stopwatch);
     
           String path = currentCSVFile();
           File file;
@@ -76,7 +77,7 @@ void checkStopwatch(uint8_t idx) {
           } else {      
             file = SPIFFS.open(path, "a");
           }
-          file.printf("%s;%d\n", buttonID[idx].c_str(), stopwatch);
+          file.printf("%s;%lu\n", buttonID[idx].c_str(), stopwatch);
           file.close();
         }        
       }
